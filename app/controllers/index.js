@@ -14,10 +14,13 @@ module.exports = function (app) {
   // Public routes
   // const auth = require('./auth')
   // apiRouter.use('/auth', auth)
+  // const cardImages = require('./cardImages')
 
   // Private routes
-  const wxUser = require('./wxUser')
-  apiRouter.use('/wxUser', wxUser)
+
+  const tables = require('./tables')
+
+  apiRouter.use('/tables', tables)
 
   apiRouter.use(authErrorHandler)
 }
