@@ -29,12 +29,20 @@ const joiTableOneSchema = Joi.object().keys({
 });
 
 async function createTableOne({ studentName, tableName, date }) {
-  const newTableOne = new TableOne({ studentName, tableName, date, records: []})
+  const newTableOne = new TableOne({ studentName, tableName, date, stos: [], records: []})
   return newTableOne.save()
 }
 
 async function deleteTable({ studentName, tableName, date}) {
   return TableOne.findOneAndDelete({ studentName, tableName, date })
+}
+
+async function updateNewStoToTable({ studentName, tableName, date, stos}) {
+  return TableOne.findOneAndUpdate({
+      studentName, tableName, date},
+    {
+      stos
+    })
 }
 
 async function updateNewRecordToTable( { studentName, tableName, date, records}) {

@@ -33,11 +33,16 @@ router.post('/create/tableOne', async function(req, res) {
     return sendJoiValidationError(joiError, res)
   }
 
-  // try {
-  await createTableOne(reqBody)
-  // } catch(err) {
-  //   return res.status(500).send({message: err.message})
-  // }
+  try {
+    const table = await getTable(reqBody)
+    if(!_.isNil(table)) {
+      return res.status(400).send({message: '该表格已存在'})
+    }
+    await createTableOne(reqBody)
+    return res.sendStatus(200)
+  } catch(err) {
+    return res.status(500).send({message: err})
+  }
 })
 
 // router.get('/info', async function(req, res) {
