@@ -29,7 +29,7 @@ const joiTableOneSchema = Joi.object().keys({
 });
 
 async function createTableOne({ studentName, tableName, date }) {
-  const newTableOne = new TableOne({ studentName, tableName, date, stos: [], records: []})
+  const newTableOne = new TableOne({ studentName, tableName, date, records: {}})
   return newTableOne.save()
 }
 

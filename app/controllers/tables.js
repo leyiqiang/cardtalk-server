@@ -30,6 +30,7 @@ router.post('/create/tableOne', async function(req, res) {
 
   const joiError = joiResult.error
   if(!_.isNil(joiError)) {
+    console.log(joiError)
     return sendJoiValidationError(joiError, res)
   }
 
@@ -37,9 +38,11 @@ router.post('/create/tableOne', async function(req, res) {
     const table = await getTable(reqBody)
     if(!_.isNil(table)) {
       return res.status(400).send({message: '该表格已存在'})
+    } else {
+      const tableOne = await createTableOne(reqBody)
+      console.log(tableOne)
+      return res.status(200).send(tableOne)
     }
-    await createTableOne(reqBody)
-    return res.sendStatus(200)
   } catch(err) {
     return res.status(500).send({message: err})
   }

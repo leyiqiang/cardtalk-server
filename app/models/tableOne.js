@@ -7,8 +7,7 @@ const TableOneSchema = new Schema({
   studentName: { type: String, required: true },
   tableName: { type: String, required: true },
   date: { type: Date, required: true },
-  stos:  [String],
-  records: [{ sto: String, isCompleted: Boolean, hint: String}],
+  records: { type: Object },
   note: {type: String},
 });
 
