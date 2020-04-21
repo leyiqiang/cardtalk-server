@@ -7,11 +7,9 @@ const TableOneSchema = new Schema({
   studentName: { type: String, required: true },
   tableName: { type: String, required: true },
   date: { type: Date, required: true },
-  records: { type: Object },
-  note: {type: String},
+  records: [{ type: Schema.Types.ObjectId, ref: 'stoRecord'}],
+  note: {type: String, default: ""},
 });
-
-TableOneSchema.index({studentName: 1, tableName: 1, date: 1}, {unique: true})
 
 // GroupSchema.virtual('user', {
 //   ref: userSchemaString,

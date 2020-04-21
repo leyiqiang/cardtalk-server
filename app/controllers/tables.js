@@ -1,5 +1,6 @@
 'use strict'
 const express = require('express')
+const mongoose = require('mongoose');
 const router = express.Router();
 const _ = require('lodash')
 const uuidv4 = require('uuid/v4');
@@ -8,6 +9,7 @@ const { sendJoiValidationError } = require('../utils/joi');
 const config = require('../../config')
 const querystring = require('querystring')
 const request = require('request')
+
 
 const {
   joiTableOneSchema,
@@ -46,12 +48,21 @@ router.post('/create/tableOne', async function(req, res) {
   }
 })
 
-router.get('/tableOne/:studentName/:date/:tableName', async function(req, res) {
-  const { studentName, date, tableName } = req.params
-  const tableData = await getTable({ studentName, date, tableName})
-  if(!_.isNil(tableData)) {
-    console.log(tableData)
-    return res.status(200).send(tableData)
+router.post('/tableOne/:tableID', async function(req, res) {
+
+}
+
+router.get('/tableOne/:tableID', async function(req, res) {
+  const { tableID } = req.params
+  if(mongoose.Types.ObjectId.isValid(tableID)){
+    const tableData = await getTable({ tableID })
+    if(!_.isNil(tableData)) {
+      return res.status(200).send(tableData)
+    } else {
+      return res.status(404).send({message:"该表格不存在"})
+    }
+  } else {
+    return res.status(404).send({message:"该表格不存在"})
   }
 })
 
