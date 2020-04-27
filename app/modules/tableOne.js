@@ -29,7 +29,7 @@ const joiTableOneSchema = Joi.object().keys({
 });
 
 async function createTableOne({ studentName, tableName, date }) {
-  const newTableOne = new TableOne({ studentName, tableName, date, records: []})
+  const newTableOne = new TableOne({ studentName, tableName, date, stoRecords: []})
   return newTableOne.save()
 }
 
@@ -37,17 +37,10 @@ async function deleteTable({ studentName, tableName, date}) {
   return TableOne.findOneAndDelete({ studentName, tableName, date })
 }
 
-async function addNewStoToTable({ studentName, tableName, date, newSto}) {
-  return TableOne.findOneAndUpdate({
-      studentName, tableName, date},
-    {
-      $push: {records: newSto}
-    })
-}
 
 async function updateStoListToSto( { studentName, tableName, date, sto, newStoList}) {
   return TableOne.findOneAndUpdate({
-    studentName, tableName, date, 'records.sto': sto},
+    studentName, tableName, date, 'stoRecords.sto': sto},
     {
       stoList: newStoList
     })
@@ -55,12 +48,12 @@ async function updateStoListToSto( { studentName, tableName, date, sto, newStoLi
 
 async function deleteSto({studentName, tableName, date, sto }) {
   const findTableOne = TableOne.findOne({
-      studentName, tableName, date, 'records.sto': sto})
+      studentName, tableName, date, 'stoRecords.sto': sto})
   // todo
 }
 async function getTable({ tableID }) {
   return TableOne.findOne({ _id: tableID })
-    .populate('records')
+    .populate('stoRecords')
 }
 // async function findGroupByGroupName({ groupName }) {
 //   return WxUser.findOne({ groupName })
@@ -88,5 +81,5 @@ module.exports = {
   joiTableOneSchema,
   createTableOne,
   deleteTable,
-  getTable
+  getTable,
 }

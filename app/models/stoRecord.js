@@ -4,8 +4,8 @@ const STORecordSchemaString = 'stoRecord';
 // const { userSchemaString } = require('./user');
 
 const STORecordSchema = new Schema({
-  tableID: { type: Schema.Types.ObjectId, ref:"tableOne" },
-  sto: {type: String},
+  tableID: { type: Schema.Types.ObjectId },
+  sto: {type: String, required: true},
   stoList: [{
     isSuccess: {type: Boolean, required: true},
     promptLevel:{type: String, required: true},

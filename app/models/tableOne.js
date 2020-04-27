@@ -7,10 +7,16 @@ const TableOneSchema = new Schema({
   studentName: { type: String, required: true },
   tableName: { type: String, required: true },
   date: { type: Date, required: true },
-  records: [{ type: Schema.Types.ObjectId, ref: 'stoRecord'}],
   note: {type: String, default: ""},
-});
+},{ toJSON: { virtuals: true }, toObject: { virtuals: true }});
 
+
+TableOneSchema.virtual('stoRecords', {
+  ref: 'stoRecord',
+  localField: '_id',
+  foreignField: 'tableID',
+  justOne: false,
+})
 // GroupSchema.virtual('user', {
 //   ref: userSchemaString,
 //   localField: 'groupName',
