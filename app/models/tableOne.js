@@ -17,18 +17,6 @@ TableOneSchema.virtual('stoRecords', {
   foreignField: 'tableID',
   justOne: false,
 })
-// GroupSchema.virtual('user', {
-//   ref: userSchemaString,
-//   localField: 'groupName',
-//   foreignField: 'groupName',
-//   justOne: true,
-// });
-//
-// GroupSchema.statics = {
-//   definedPopulate(query) {
-//     return query.populate('user');
-//   },
-// };
 
 mongoose.model(tableOneSchemaString, TableOneSchema);
 

@@ -53,7 +53,14 @@ async function deleteSto({studentName, tableName, date, sto }) {
 }
 async function getTable({ tableID }) {
   return TableOne.findOne({ _id: tableID })
-    .populate('stoRecords')
+    .populate({
+      path: 'stoRecords',
+      model: 'stoRecord',
+      populate: {
+        path: 'stoList',
+        model:'stoSingleData'
+      }
+    })
 }
 // async function findGroupByGroupName({ groupName }) {
 //   return WxUser.findOne({ groupName })

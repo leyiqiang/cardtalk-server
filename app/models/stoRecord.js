@@ -4,15 +4,17 @@ const STORecordSchemaString = 'stoRecord';
 // const { userSchemaString } = require('./user');
 
 const STORecordSchema = new Schema({
-  tableID: { type: Schema.Types.ObjectId },
+  tableID: { type: Schema.Types.ObjectId, required: true },
   sto: {type: String, required: true},
-  stoList: [{
-    isSuccess: {type: Boolean, required: true},
-    promptLevel:{type: String, required: true},
-    note: {type: String, required: false}
-  }]
-});
+},{ toJSON: { virtuals: true }, toObject: { virtuals: true }});
 
+
+STORecordSchema.virtual('stoList', {
+  ref: 'stoSingleData',
+  localField: '_id',
+  foreignField: 'stoRecordID',
+  justOne: false,
+})
 // GroupSchema.virtual('user', {
 //   ref: userSchemaString,
 //   localField: 'groupName',

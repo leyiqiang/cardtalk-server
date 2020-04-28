@@ -18,23 +18,8 @@ const STORecord = mongoose.model(STORecordSchemaString);
 
 
 async function createSTORecord({ tableID, sto }) {
-  console.log(sto)
-  const newSTORecord = new STORecord({ tableID, sto, stoList: []})
+  const newSTORecord = new STORecord({ tableID, sto})
   return newSTORecord.save()
-}
-
-async function updateSTORecordById({id, stoList}) {
-  return STORecord.findOneAndUpdate({
-    _id: id
-  }, {stoList: stoList})
-}
-
-async function addSTORecordById({ id, newStoRecord}) {
-  return STORecord.findOneAndUpdate({
-    _id: id
-  }, {
-    $push: {stoList: newStoRecord}
-  })
 }
 
 async function findSTOByTableIdAndName({tableID, stoName}) {
@@ -43,9 +28,15 @@ async function findSTOByTableIdAndName({tableID, stoName}) {
     sto: stoName
   })
 }
+
+
+async function getSTORecord({stoRecordID}) {
+  return STORecord.find({
+    _id: stoRecordID
+  })
+}
 module.exports = {
   createSTORecord,
-  updateSTORecordById,
-  addSTORecordById,
-  findSTOByTableIdAndName
+  findSTOByTableIdAndName,
+  getSTORecord
 }
