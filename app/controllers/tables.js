@@ -17,6 +17,7 @@ const {
   deleteTable,
   updateNewRecordToTable,
   getTable,
+  getAllTableOnes,
 } = require('../modules/tableOne')
 
 const { createSTORecord,
@@ -27,6 +28,15 @@ const { createSTORecord,
 const { createSTOSingleData, changeSTOSingleData } = require('../modules/stoSinglData')
 
 
+
+router.get('/tableOne/all', async function(req, res) {
+  try {
+    const tableOnes = await getAllTableOnes();
+    return res.status(200).send({tables: tableOnes})
+  } catch(e) {
+    return res.status(500).send({message: err})
+  }
+})
 
 router.post('/tableOne/create', async function(req, res) {
   const fieldList = ['studentName', 'tableName', 'date']
@@ -130,5 +140,21 @@ router.post('/tableOne/edit/:stoSingleID', async function(req, res) {
     return res.status(500).send({message: err})
   }
 })
+
+
+
+// tables management
+router.get('/tables', async function(req, res) {
+  try {
+    const tableOnes = await getAllTableOnes();
+    // const abcTable = await getAllABCTables();
+    // todo append all lists
+    return res.status(200).send({tables: tableOnes})
+  } catch (e) {
+    return res.status(500).send({message: err})
+  }
+})
+
+
 
 module.exports = router

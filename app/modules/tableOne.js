@@ -51,7 +51,9 @@ async function deleteSto({studentName, tableName, date, sto }) {
       studentName, tableName, date, 'stoRecords.sto': sto})
   // todo
 }
+
 async function getTable({ tableID }) {
+  // need to populate twice as we have nested arrays
   return TableOne.findOne({ _id: tableID })
     .populate({
       path: 'stoRecords',
@@ -61,6 +63,10 @@ async function getTable({ tableID }) {
         model:'stoSingleData'
       }
     })
+}
+
+async function getAllTableOnes() {
+  return TableOne.find({})
 }
 // async function findGroupByGroupName({ groupName }) {
 //   return WxUser.findOne({ groupName })
@@ -89,4 +95,5 @@ module.exports = {
   createTableOne,
   deleteTable,
   getTable,
+  getAllTableOnes
 }
