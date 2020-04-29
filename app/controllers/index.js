@@ -22,8 +22,11 @@ module.exports = function (app) {
 
   const tableOne = require('./tableOne')
 
+  const abcTable = require('./abcTable')
+
   apiRouter.use('/tables', tables)
   apiRouter.use('/tableOne', tableOne)
+  apiRouter.use('/abcTable', abcTable)
 
 
   apiRouter.use(authErrorHandler)

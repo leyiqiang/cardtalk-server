@@ -12,19 +12,21 @@ const request = require('request')
 
 
 const {
-  joiTableOneSchema,
-  createTableOne,
-  deleteTable,
-  updateNewRecordToTable,
-  getTable,
-  getAllTableOnes,
+  joiABCTableSchema,
+  createABCTable,
+  getABCTable,
 } = require('../modules/abcTable')
+
+const {
+  createABCRecord,
+  getABCRecord
+} = require('../modules/abcRecord')
 
 router.post('/create', async function(req, res) {
   const fieldList = ['studentName', 'tableName', 'date']
   let reqBody = _.pick(req.body, fieldList)
 
-  const joiResult = joiTableOneSchema.validate(reqBody, {
+  const joiResult = joiABCTableSchema.validate(reqBody, {
     presence: 'required',
     abortEarly: false
   })
@@ -35,12 +37,12 @@ router.post('/create', async function(req, res) {
   }
 
   try {
-    const table = await getTable(reqBody)
+    const table = await getABCTable(reqBody)
     if(!_.isNil(table)) {
       return res.status(400).send({message: '该表格已存在'})
     } else {
-      const tableOne = await createTableOne(reqBody)
-      return res.status(200).send(tableOne)
+      const abcTable = await createABCTable(reqBody)
+      return res.status(200).send(abcTable)
     }
   } catch(err) {
     return res.status(500).send({message: err})
@@ -54,7 +56,7 @@ router.post('/newABCRecord/:tableID', async function(req, res) {
     return res.status(404).send({message:"非法表格ID"})
   }
 
-  const tableData = await getTable({ tableID })
+  const tableData = await getABCTable({ tableID })
   if(_.isNil(tableData)) {
     return res.status(404).send({message:"该表格不存在"})
 
@@ -79,7 +81,7 @@ router.post('/newABCRecord/:tableID', async function(req, res) {
 router.get('/:tableID', async function(req, res) {
   const { tableID } = req.params
   if(mongoose.Types.ObjectId.isValid(tableID)){
-    const tableData = await getTable({ tableID })
+    const tableData = await getABCTable({ tableID })
     if(!_.isNil(tableData)) {
       return res.status(200).send(tableData)
     } else {

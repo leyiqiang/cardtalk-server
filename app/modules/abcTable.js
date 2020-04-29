@@ -7,6 +7,11 @@ const _ = require('lodash')
 
 const ABCTable= mongoose.model(ABCTableSchemaString);
 
+const joiABCTableSchema = Joi.object().keys({
+  studentName: Joi.string().min(1).max(10).required(),
+  tableName: Joi.string().min(1).max(10).required(),
+  date: Joi.date(),
+});
 
 async function createABCTable({ studentName, tableName, date }) {
   const newABCTable = new ABCTable({ studentName, tableName, date, stoRecords: []})
@@ -25,6 +30,7 @@ async function getABCTable({ tableID }) {
 }
 
 module.exports = {
+  joiABCTableSchema,
   createABCTable,
   getABCTable
 }
