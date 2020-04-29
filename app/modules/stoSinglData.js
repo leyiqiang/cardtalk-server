@@ -14,7 +14,7 @@ async function createSTOSingleData({ stoRecordID, isSuccess, promptLevel }) {
 }
 
 async function changeSTOSingleData({stoSingleDataID, isSuccess, promptLevel}) {
-  return STORecord.findOneAndUpdate({
+  return STOSingleData.findOneAndUpdate({
     _id: stoSingleDataID},
     {
       isSuccess: isSuccess,
