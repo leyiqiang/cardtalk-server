@@ -4,10 +4,10 @@ const ABCRecordSchemaString = 'abcRecord';
 // const { userSchemaString } = require('./user');
 
 const ABCRecordSchema = new Schema({
-  tableID: { type: Schema.Types.ObjectId, required: true },
-  antecedent: { type: String, required: true},
-  behavior: { type: String, required: true},
-  consequence: { type: String, required: true},
+  tableID: { type: Schema.Types.ObjectId },
+  antecedent: { type: String },
+  behavior: { type: String },
+  consequence: { type: String },
 });
 
 mongoose.model(ABCRecordSchemaString, ABCRecordSchema);

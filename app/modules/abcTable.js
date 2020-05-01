@@ -29,6 +29,7 @@ async function getABCTable({ tableID }) {
     })
 }
 
+
 module.exports = {
   joiABCTableSchema,
   createABCTable,

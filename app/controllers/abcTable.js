@@ -19,7 +19,9 @@ const {
 
 const {
   createABCRecord,
-  getABCRecord
+  getABCRecord,
+  editABCRecord,
+  deleteABCRecord
 } = require('../modules/abcRecord')
 
 router.post('/create', async function(req, res) {
@@ -49,35 +51,6 @@ router.post('/create', async function(req, res) {
   }
 })
 
-
-router.post('/newABCRecord/:tableID', async function(req, res) {
-  const { tableID } = req.params
-  if(!mongoose.Types.ObjectId.isValid(tableID)) {
-    return res.status(404).send({message:"非法表格ID"})
-  }
-
-  const tableData = await getABCTable({ tableID })
-  if(_.isNil(tableData)) {
-    return res.status(404).send({message:"该表格不存在"})
-
-  }
-  const fieldList = ['stoName']
-  let reqBody = _.pick(req.body, fieldList)
-  if(_.isNil(reqBody.stoName)) {
-    return res.status(404).send({message:"STO不可为空"})
-  }
-  const foundedSTO = await findSTOByTableIdAndName({tableID, stoName: reqBody.stoName})
-  if(foundedSTO.length > 0){
-    return res.status(400).send({message:"该STO已存在"})
-  }
-  try {
-    const newSTO = await createSTORecord({tableID, sto: reqBody.stoName})
-    return res.status(200).send({newSTO: newSTO })
-  } catch(err) {
-    return res.status(500).send({message: err})
-  }
-})
-
 router.get('/:tableID', async function(req, res) {
   const { tableID } = req.params
   if(mongoose.Types.ObjectId.isValid(tableID)){
@@ -92,6 +65,30 @@ router.get('/:tableID', async function(req, res) {
   }
 })
 
+router.post('/addAbcRecord/:tableID', async function(req, res) {
+  const { tableID } = req.params
+  if(!mongoose.Types.ObjectId.isValid(tableID)) {
+    return res.status(404).send({message:"非法表格ID"})
+  }
+
+  const tableData = await getABCTable({ tableID })
+  if(_.isNil(tableData)) {
+    return res.status(404).send({message:"该表格不存在"})
+
+  }
+  const fieldList = ['antecedent', 'behavior', 'consequence']
+  let reqBody = _.pick(req.body, fieldList)
+  // if(_.isNil(reqBody.stoName)) {
+  //   return res.status(404).send({message:"STO不可为空"})
+  // }
+  try {
+    const newABCRecord = await createABCRecord({tableID: tableID, ...reqBody})
+    return res.status(200).send({newABCRecord: newABCRecord })
+  } catch(err) {
+    return res.status(500).send({message: err})
+  }
+})
+
 
 
 router.post('/edit/:abcRecordID', async function(req, res) {
@@ -99,10 +96,39 @@ router.post('/edit/:abcRecordID', async function(req, res) {
   if(! mongoose.Types.ObjectId.isValid(abcRecordID)) {
     return res.status(400).send({message:"非法ID"})
   }
-  const fieldList = ['isSuccess', 'promptLevel']
+
+  const abcRecordData = await getABCRecord({ abcRecordID })
+
+  if(_.isNil(abcRecordData)) {
+    return res.status(404).send({message:"该ABC数据不存在"})
+
+  }
+
+  const fieldList = ['antecedent', 'behavior', 'consequence']
   const reqBody =  _.pick(req.body, fieldList)
   try {
-    await changeSTOSingleData({ stoSingleDataID: stoSingleID, isSuccess: reqBody.isSuccess, promptLevel: reqBody.promptLevel})
+    await editABCRecord({abcRecordID, ...reqBody})
+    return res.sendStatus(200)
+  } catch(err) {
+    return res.status(500).send({message: err})
+  }
+})
+
+router.post('/delete/:abcRecordID', async function(req, res) {
+  const { abcRecordID } = req.params
+  if(! mongoose.Types.ObjectId.isValid(abcRecordID)) {
+    return res.status(400).send({message:"非法ID"})
+  }
+  //
+  // const abcRecordData = await getABCRecord({ abcRecordID })
+  //
+  // if(_.isNil(abcRecordData)) {
+  //   return res.status(404).send({message:"该ABC数据不存在"})
+  //
+  // }
+
+  try {
+    await deleteABCRecord({abcRecordID})
     return res.sendStatus(200)
   } catch(err) {
     return res.status(500).send({message: err})
