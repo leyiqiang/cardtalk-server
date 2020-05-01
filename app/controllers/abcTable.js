@@ -15,6 +15,7 @@ const {
   joiABCTableSchema,
   createABCTable,
   getABCTable,
+  getAllABCTables,
 } = require('../modules/abcTable')
 
 const {
@@ -23,6 +24,17 @@ const {
   editABCRecord,
   deleteABCRecord
 } = require('../modules/abcRecord')
+
+
+router.get('/all', async function(req, res) {
+  try {
+    const tableOnes = await getAllABCTables({});
+    return res.status(200).send({tables: tableOnes})
+  } catch(e) {
+    return res.status(500).send({message: err})
+  }
+})
+
 
 router.post('/create', async function(req, res) {
   const fieldList = ['studentName', 'tableName', 'date']

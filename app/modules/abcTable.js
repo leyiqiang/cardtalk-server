@@ -30,8 +30,13 @@ async function getABCTable({ tableID }) {
 }
 
 
+async function getAllABCTables({}) {
+  return ABCTable.find()
+}
+
 module.exports = {
   joiABCTableSchema,
   createABCTable,
-  getABCTable
+  getABCTable,
+  getAllABCTables
 }
