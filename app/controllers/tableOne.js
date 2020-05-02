@@ -27,7 +27,8 @@ const { createSTORecord,
 
 const { createSTOSingleData, changeSTOSingleData } = require('../modules/stoSinglData')
 
-
+const authorization = require('../middlewares/auth')
+router.use(authorization.requiresLogin)
 
 router.get('/all', async function(req, res) {
   try {

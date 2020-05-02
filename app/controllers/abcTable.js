@@ -25,6 +25,8 @@ const {
   deleteABCRecord
 } = require('../modules/abcRecord')
 
+const authorization = require('../middlewares/auth')
+router.use(authorization.requiresLogin)
 
 router.get('/all', async function(req, res) {
   try {
